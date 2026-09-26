@@ -54,7 +54,7 @@ jobs:
             echo '```'
             cat out/build-info.txt
             echo '```'
-          } > notes.md
+          } > "${RUNNER_TEMP}/notes.md"
           gh release create "${GITHUB_REF_NAME}" \
             out/*.tar.gz out/*.tar.gz.sha256 out/build-info.txt \
-            --title "${GITHUB_REF_NAME}" --notes-file notes.md
+            --title "${GITHUB_REF_NAME}" --notes-file "${RUNNER_TEMP}/notes.md"

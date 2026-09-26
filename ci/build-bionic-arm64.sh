@@ -24,6 +24,12 @@ set -euo pipefail
 TOP="$(pwd)"
 RUN_TESTS="${RUN_TESTS:-1}"
 
+# The tree is bind-mounted from the host (the CI runner's checkout). Whatever
+# this container does to ownership, hand it back on exit, or the runner cannot
+# write to its own workspace afterwards.
+OWNER="$(stat -c %u:%g "${TOP}")"
+trap 'chown -R "${OWNER}" "${TOP}"' EXIT
+
 # 10.5p1, from the tree itself: "OpenSSH_10.5" + "p1".
 ver="$(sed -n 's/^#define SSH_VERSION[[:space:]]*"OpenSSH_\(.*\)"/\1/p' version.h)"
 port="$(sed -n 's/^#define SSH_PORTABLE[[:space:]]*"\(.*\)"/\1/p' version.h)"
