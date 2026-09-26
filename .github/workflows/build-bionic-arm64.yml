@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-24.04-arm
     timeout-minutes: 180
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # docker run rather than a `container:` job: actions' own node runtime
       # does not start on bionic's glibc 2.27.
@@ -34,7 +34,7 @@ jobs:
             -e RELEASE_TAG="${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || '' }}" \
             arm64v8/ubuntu:18.04 ci/build-bionic-arm64.sh
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: openssh-bionic-arm64
           path: out/
